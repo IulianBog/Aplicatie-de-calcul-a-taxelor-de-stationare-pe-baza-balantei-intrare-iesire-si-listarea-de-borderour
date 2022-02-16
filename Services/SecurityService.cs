@@ -12,6 +12,7 @@ namespace Proiect.Services
     {
         readonly UserDAO userDAO = new UserDAO();
       
+
         public bool IsValid(UserModel user)
         {
             
