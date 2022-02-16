@@ -43,9 +43,6 @@ namespace Proiect.Services
                         user.Roles_Id = (int)reader.GetDecimal("ROLES_ID");
 
                         succes = true;
-        
-
-
                     }
 
                 }
@@ -65,11 +62,6 @@ namespace Proiect.Services
             return succes;
 
         }
-                
-
-       
-                
-
     }
 }
 
