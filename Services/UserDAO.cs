@@ -21,6 +21,8 @@ namespace Proiect.Services
 
             using (OracleConnection con = new OracleConnection(conString))
             {
+
+                user.Password = SecurityService.CreateMD5(user.Password);
                 
                     sqlStatement = "SELECT * FROM C##TAXARE1.USERS WHERE C##TAXARE1.USERS.NICKNAME = :username AND C##TAXARE1.USERS.PASSWORD = :password";
                     OracleCommand cmd = new OracleCommand(sqlStatement,con);
