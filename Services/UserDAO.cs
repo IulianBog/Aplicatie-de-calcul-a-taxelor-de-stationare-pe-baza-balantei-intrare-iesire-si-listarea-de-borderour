@@ -29,7 +29,6 @@ namespace Proiect.Services
                     
                     cmd.Parameters.Add(new OracleParameter("username",user.UserName));
                     cmd.Parameters.Add(new OracleParameter("password", user.Password));
-                    cmd.Parameters.Add(new OracleParameter("ID", user.Id));
 
                 try
                 {
