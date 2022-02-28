@@ -1,0 +1,116 @@
+﻿@model Proiect.Models.CollectionDataModel
+
+<!DOCTYPE html>
+
+<style>
+    .right {
+        position: fixed;
+        top: 10%;
+        left: 50%;
+    }
+
+    .left {
+        position: fixed;
+        top: 10%;
+        left: 10%;
+    }
+
+    .down_left {
+        position: fixed;
+        top: 80%;
+        left: 10%;
+    }
+
+    .down_right {
+        position: fixed;
+        top: 80%;
+        left: 50%;
+    }
+
+    .centered {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -100px;
+    }
+
+    .centerd_down {
+        position: fixed;
+        top: 75%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -100px;
+    }
+</style>
+
+<html>
+
+<body>
+
+    <p><b>OTF</b></p>
+
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Trafic_Type_Id</th>
+        </tr>
+        @foreach (OTFModel otf in Model.OTF)
+        {
+            <tr>
+                <td>@otf.Id</td>
+                <td>@otf.Name</td>
+                <td>@otf.Trafic_Type_Id</td>
+            </tr>
+        }
+    </table>
+
+    @*  <div class="form-group">
+                @Html.LabelFor(OtfModel => , new { @class = "control-label col-md-2" });
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.NumberOfTickets)
+                    @Html.ValidationMessageFor(model => model.NumberOfTickets)
+                </div>
+            </div>
+
+        <div class="form-row col-md-4 left">
+
+            <label for="inputState"> Statie: </label>
+            <select id="inputState" class="form-control">
+                <option selected> Choose...</option>
+                <option> ...</option>
+            </select>
+        </div>
+
+        <div class="centerd_down">
+            <div class="form-row align-items-center">
+                <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Numar tren">
+            </div>
+
+            <div class="form-row align-items-center">
+                <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Numar vagoane">
+            </div>
+            <div class="form-row align-items-center">
+                <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Data - ora">
+            </div>
+        </div>
+        <div class="down_left">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                <label class="form-check-label" for="exampleRadios1">
+                    Sosiri
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+                <label class="form-check-label" for="exampleRadios2">
+                    Plecari
+                </label>
+            </div>
+        </div>
+
+    *@
+</body>
+
+</html>
