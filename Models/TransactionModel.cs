@@ -11,7 +11,7 @@ namespace Proiect.Models
         [Key]
         public int Id { get; set; }
 
-        public char Sens { get; set; }
+        public string Sens { get; set; }
 
         public string Data_Time { get; set; }
 

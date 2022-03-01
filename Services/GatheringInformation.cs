@@ -29,7 +29,7 @@ namespace Proiect.Services
                     cmd.BindByName = true;
                     OracleDataReader reader = cmd.ExecuteReader();
 
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         checkpoint.Add(new CheckpointModel 
                         { 
@@ -57,6 +57,7 @@ namespace Proiect.Services
         public List <OTFModel>GetOTF()
         {
             List<OTFModel> otf = new List<OTFModel>();
+            OTFModel otfmodel = new OTFModel();
 
             using (OracleConnection con = new OracleConnection(conString))
              {
@@ -69,11 +70,11 @@ namespace Proiect.Services
                     cmd.BindByName = true;
                     OracleDataReader reader = cmd.ExecuteReader();
 
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         otf.Add(new OTFModel
                         {
-                            Id = (int)reader.GetDecimal("ID"),
+                            Id = (string)reader.GetString("ID"),
                             Name = (string)reader.GetString("NAME"),
                             Trafic_Type_Id = (string)reader.GetString("TRAFIC_TYPE_ID")
                         });
@@ -108,17 +109,17 @@ namespace Proiect.Services
                     cmd.BindByName = true;
                     OracleDataReader reader = cmd.ExecuteReader();
 
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         station.Add(new StationModel
                         {
                             Id = (string)reader.GetString("ID"),
                             Name = (string)reader.GetString("NAME"),
-                            Taxes_Values_Id = (int)reader.GetDecimal("TAXES_VALUE_ID")
+                            Taxes_Values_Id = (int)reader.GetDecimal("TAXES_VALUES_ID")
                         });
                     }
                 }
-                catch (Exception e)
+                catch (Exception e) //Specified cast is not valid
                 {
                     Console.WriteLine(e.Message);
                 }
@@ -147,7 +148,7 @@ namespace Proiect.Services
                     cmd.BindByName = true;
                     OracleDataReader reader = cmd.ExecuteReader();
 
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         taxes_type.Add(new Taxes_TypesModel
                         {
@@ -177,7 +178,7 @@ namespace Proiect.Services
             using (OracleConnection con = new OracleConnection(conString))
             {
 
-                sqlStatement = "SELECT * FROM C##TAXARE1.TAXES_VALUE";
+                sqlStatement = "SELECT * FROM C##TAXARE1.TAXES_VALUES";
                 OracleCommand cmd = new OracleCommand(sqlStatement, con);
 
                 try
@@ -186,7 +187,7 @@ namespace Proiect.Services
                     cmd.BindByName = true;
                     OracleDataReader reader = cmd.ExecuteReader();
 
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         taxes_values.Add(new Taxes_ValueModel
                         {
@@ -230,11 +231,11 @@ namespace Proiect.Services
                     cmd.BindByName = true;
                     OracleDataReader reader = cmd.ExecuteReader();
 
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         trafic_type.Add(new Trafic_TypeModel
                         {
-                            Id = (char)reader.GetChar("ID"),
+                            Id = (string)reader.GetString("ID"),
                             Name = (string)reader.GetString("NAME")
                         });
                     }
@@ -274,7 +275,7 @@ namespace Proiect.Services
                         transaction.Add(new TransactionModel
                         {
                             Id = (int)reader.GetDecimal("ID"),
-                            Sens = (char)reader.GetChar("SENS"),
+                            Sens = (string)reader.GetString("SENS"),
                             Data_Time = (string)reader.GetString("DATA_TIME"),
                             Train_Number = (string)reader.GetString("TRAIN_NUMBER"),
                             Vagon_Number = (int)reader.GetDecimal("VAGON_NUMBER"),
