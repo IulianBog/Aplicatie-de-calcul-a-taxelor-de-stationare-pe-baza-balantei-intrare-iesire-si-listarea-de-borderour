@@ -14,9 +14,9 @@ namespace Proiect.Services
         readonly string conString = "User Id=C##TAXARE1;Password=123456;Data Source=localhost:1521/xe;Connection Timeout=30;";
         private string sqlStatement;
 
-        public List <CheckpointModel>GetCheckpoint()
+        public Dictionary<int,CheckpointModel > GetCheckpoint()
         {
-            List<CheckpointModel> checkpoint = new List<CheckpointModel>();
+            Dictionary<int,CheckpointModel> checkpoint = new Dictionary<int, CheckpointModel>();
 
             using (OracleConnection con = new OracleConnection(conString))
             {
@@ -31,7 +31,7 @@ namespace Proiect.Services
 
                     while (reader.Read())
                     {
-                        checkpoint.Add(new CheckpointModel 
+                        checkpoint.Add((int)reader.GetDecimal("ID"), new CheckpointModel 
                         { 
                            Id = (int)reader.GetDecimal("ID"), 
                            Balance_Wagons = (int)reader.GetDecimal("BALANCE_WAGONS"),
@@ -54,9 +54,9 @@ namespace Proiect.Services
             }
         }
 
-        public List <OTFModel>GetOTF()
+        public Dictionary<string,OTFModel>GetOTF()
         {
-            List<OTFModel> otf = new List<OTFModel>();
+            Dictionary<string,OTFModel> otf = new Dictionary<string,OTFModel>();
             OTFModel otfmodel = new OTFModel();
 
             using (OracleConnection con = new OracleConnection(conString))
@@ -72,7 +72,7 @@ namespace Proiect.Services
 
                     while (reader.Read())
                     {
-                        otf.Add(new OTFModel
+                        otf.Add((string)reader.GetString("ID"), new OTFModel
                         {
                             Id = (string)reader.GetString("ID"),
                             Name = (string)reader.GetString("NAME"),
@@ -94,9 +94,9 @@ namespace Proiect.Services
             }
         }
 
-        public List<StationModel>GetStation()
+        public Dictionary<string,StationModel>GetStation()
         {
-            List<StationModel> station = new List<StationModel>();
+            Dictionary<string,StationModel> station = new Dictionary<string,StationModel>();
 
             using (OracleConnection con = new OracleConnection(conString))
             {
@@ -111,7 +111,7 @@ namespace Proiect.Services
 
                     while (reader.Read())
                     {
-                        station.Add(new StationModel
+                        station.Add((string)reader.GetString("ID"), new StationModel
                         {
                             Id = (string)reader.GetString("ID"),
                             Name = (string)reader.GetString("NAME"),
@@ -119,7 +119,7 @@ namespace Proiect.Services
                         });
                     }
                 }
-                catch (Exception e) //Specified cast is not valid
+                catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                 }
@@ -133,9 +133,9 @@ namespace Proiect.Services
             }
         }
 
-        public List<Taxes_TypesModel>GetTaxes_Types()
+        public Dictionary<int,Taxes_TypesModel>GetTaxes_Types()
         {
-            List<Taxes_TypesModel> taxes_type = new List<Taxes_TypesModel>();
+            Dictionary<int,Taxes_TypesModel> taxes_type = new Dictionary<int,Taxes_TypesModel>();
 
             using (OracleConnection con = new OracleConnection(conString))
             {
@@ -150,7 +150,7 @@ namespace Proiect.Services
 
                     while (reader.Read())
                     {
-                        taxes_type.Add(new Taxes_TypesModel
+                        taxes_type.Add((int)reader.GetDecimal("ID"), new Taxes_TypesModel
                         {
                             Id = (int)reader.GetDecimal("ID"),
                             Description = (string)reader.GetString("DESCRIPTION")
@@ -171,9 +171,9 @@ namespace Proiect.Services
             }
         }
 
-        public List<Taxes_ValueModel>GetTaxes_Value()
+        public Dictionary<int,Taxes_ValueModel>GetTaxes_Value()
         {
-            List<Taxes_ValueModel> taxes_values = new List<Taxes_ValueModel>();
+            Dictionary<int,Taxes_ValueModel> taxes_values = new Dictionary<int,Taxes_ValueModel>();
 
             using (OracleConnection con = new OracleConnection(conString))
             {
@@ -189,7 +189,7 @@ namespace Proiect.Services
 
                     while (reader.Read())
                     {
-                        taxes_values.Add(new Taxes_ValueModel
+                        taxes_values.Add((int)reader.GetDecimal("ID"), new Taxes_ValueModel
                         {
                             Id = (int)reader.GetDecimal("ID"),
                             Date_To_Start = (string)reader.GetString("DATE_TO_START"),
@@ -215,9 +215,9 @@ namespace Proiect.Services
             }
         }
 
-        public List<Trafic_TypeModel>GetTrafic_Type()
+        public Dictionary<string,Trafic_TypeModel>GetTrafic_Type()
         {
-            List<Trafic_TypeModel> trafic_type = new List<Trafic_TypeModel>();
+            Dictionary<string,Trafic_TypeModel> trafic_type = new Dictionary<string,Trafic_TypeModel>();
 
             using (OracleConnection con = new OracleConnection(conString))
             {
@@ -233,7 +233,7 @@ namespace Proiect.Services
 
                     while (reader.Read())
                     {
-                        trafic_type.Add(new Trafic_TypeModel
+                        trafic_type.Add((string)reader.GetString("ID"), new Trafic_TypeModel
                         {
                             Id = (string)reader.GetString("ID"),
                             Name = (string)reader.GetString("NAME")
@@ -254,9 +254,9 @@ namespace Proiect.Services
             }
         }
 
-        public List<TransactionModel>GetTransaction()
+        public Dictionary<int,TransactionModel>GetTransaction()
         {
-            List<TransactionModel> transaction = new List<TransactionModel>();
+            Dictionary<int,TransactionModel> transaction = new Dictionary<int,TransactionModel>();
 
             using (OracleConnection con = new OracleConnection(conString))
             {
@@ -272,7 +272,7 @@ namespace Proiect.Services
 
                     if (reader.Read())
                     {
-                        transaction.Add(new TransactionModel
+                        transaction.Add((int)reader.GetDecimal("ID"), new TransactionModel
                         {
                             Id = (int)reader.GetDecimal("ID"),
                             Sens = (string)reader.GetString("SENS"),

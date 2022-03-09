@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,19 +8,25 @@ namespace Proiect.Models
 {
     public class CollectionDataModel
     {
-        public IEnumerable<CheckpointModel> Checkpoint { get; set; }
+        public Dictionary<int, CheckpointModel> Checkpoint { get; set; }
 
-        public IEnumerable<OTFModel> OTF { get; set; }
+        [Required]
+        [Display(Name = "OTF")]
+        public string SelectionOTF { get; set; }
+        public Dictionary<string, OTFModel>OTF { get; set; }
 
-        public IEnumerable<StationModel> Station { get; set; }
+        [Required]
+        [Display(Name = "Statie")]
+        public string SelectionStation { get; set; }
+        public Dictionary<string, StationModel> Station { get; set; }
 
-        public IEnumerable<Taxes_TypesModel> Taxes_Types { get; set; }
+        public Dictionary<int, Taxes_TypesModel> Taxes_Types { get; set; }
 
-        public IEnumerable<Taxes_ValueModel> Taxes_Values { get; set; }
+        public Dictionary<int, Taxes_ValueModel> Taxes_Values { get; set; }
 
-        public IEnumerable<Trafic_TypeModel> Trafic_Types { get; set; }
+        public Dictionary<string, Trafic_TypeModel> Trafic_Types { get; set; }
 
-        public IEnumerable<TransactionModel> Transactions { get; set; }
+        public Dictionary<int, TransactionModel> Transactions { get; set; }
 
     }
 }

@@ -50,30 +50,34 @@
 
     <p><b>OTF</b></p>
 
-    <table>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Trafic_Type_Id</th>
-        </tr>
-        @foreach (OTFModel otf in Model.OTF)
-        {
+    @*
+        <table>
+            @foreach(OTFModel item in Model.OTF.Values)
+            {
+                            <tr>
+                                <td>@item.Name</td>
+                            </tr>
+                        }
+        </table>
+    *@
+    @*  <table>
             <tr>
-                <td>@otf.Id</td>
-                <td>@otf.Name</td>
-                <td>@otf.Trafic_Type_Id</td>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Trafic_Type_Id</th>
             </tr>
-        }
-    </table>
+            @foreach (OTFModel otf in Model.OTF)
+            {
+                <tr>
+                    <td>@otf.Id</td>
+                    <td>@otf.Name</td>
+                    <td>@otf.Trafic_Type_Id</td>
+                </tr>
+            }
+        </table>
+    *@
 
-    @*  <div class="form-group">
-                @Html.LabelFor(OtfModel => , new { @class = "control-label col-md-2" });
-                <div class="col-md-10">
-                    @Html.DropDownListFor(model => model.NumberOfTickets)
-                    @Html.ValidationMessageFor(model => model.NumberOfTickets)
-                </div>
-            </div>
-
+    @*
         <div class="form-row col-md-4 left">
 
             <label for="inputState"> Statie: </label>
@@ -109,8 +113,8 @@
                 </label>
             </div>
         </div>
-
     *@
+
 </body>
 
 </html>

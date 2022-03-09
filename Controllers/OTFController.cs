@@ -22,6 +22,7 @@ namespace Proiect.Controllers
             collectiondata.Taxes_Values = gatheringinformation.GetTaxes_Value();
             collectiondata.Trafic_Types = gatheringinformation.GetTrafic_Type();
             collectiondata.Transactions = gatheringinformation.GetTransaction();
+           
 
             return View(collectiondata);
         }
