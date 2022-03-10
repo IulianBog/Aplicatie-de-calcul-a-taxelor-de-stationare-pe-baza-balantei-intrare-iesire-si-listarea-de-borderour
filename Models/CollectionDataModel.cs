@@ -13,7 +13,7 @@ namespace Proiect.Models
         [Required]
         [Display(Name = "OTF")]
         public string SelectionOTF { get; set; }
-        public Dictionary<string, OTFModel>OTF { get; set; }
+        public Dictionary<string, OTFModel> OTF { get; set; }
 
         [Required]
         [Display(Name = "Statie")]

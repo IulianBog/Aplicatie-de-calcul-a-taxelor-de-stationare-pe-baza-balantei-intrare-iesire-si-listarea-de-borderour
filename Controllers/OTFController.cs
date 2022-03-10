@@ -5,6 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Proiect.Models;
 using Proiect.Services;
+using System.Data;
+using System.Web;
+using Microsoft.AspNetCore.Http;
 
 namespace Proiect.Controllers
 {
@@ -12,19 +15,39 @@ namespace Proiect.Controllers
     {
         public IActionResult Index()
         {
-            CollectionDataModel collectiondata = new CollectionDataModel();
+            ViewBag.Station = HttpContext.Session.GetString("Station");
+            ViewBag.OTF = HttpContext.Session.GetString("OTF");
+            return View();
+        }
+
+        public IActionResult OTF_Selection()
+        {
+            OTFModel otfModel = new OTFModel();
             GatheringInformation gatheringinformation = new GatheringInformation();
-
-            collectiondata.Checkpoint = gatheringinformation.GetCheckpoint();
-            collectiondata.OTF = gatheringinformation.GetOTF();
-            collectiondata.Station = gatheringinformation.GetStation();
-            collectiondata.Taxes_Types = gatheringinformation.GetTaxes_Types();
-            collectiondata.Taxes_Values = gatheringinformation.GetTaxes_Value();
-            collectiondata.Trafic_Types = gatheringinformation.GetTrafic_Type();
-            collectiondata.Transactions = gatheringinformation.GetTransaction();
+            otfModel.Selectie_OTF = gatheringinformation.GetOTF();
            
+            return View(otfModel);
+        }
 
-            return View(collectiondata);
+        public IActionResult Station_Selection()
+        {
+            StationModel stationModel = new StationModel();
+            GatheringInformation gatheringinformation = new GatheringInformation();
+            stationModel.Selectie_Station = gatheringinformation.GetStation();
+
+            return View(stationModel);
+        }
+
+        public IActionResult Update_Station(StationModel station)
+        {
+            HttpContext.Session.SetString("Station", station.Name.ToString());
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Update_OTF(OTFModel otf)
+        {
+            HttpContext.Session.SetString("OTF", otf.Name.ToString());
+            return RedirectToAction("Index");
         }
     }
 }

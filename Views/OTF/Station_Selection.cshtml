@@ -1,0 +1,33 @@
+﻿@model Proiect.Models.StationModel
+
+
+<!DOCTYPE html>
+
+<style>
+    .centered {
+        position: fixed;
+        top: 25%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -100px;
+    }
+</style>
+
+<div class="row, centered">
+    <div class="col-md-12">
+        <form asp-action="Update_Station" method="post">
+            <div class="form-group col-md-4">
+                <label for="inputState">Statie: </label>
+                @Html.DropDownListFor(model => model.Name,
+                         new SelectList(Model.Selectie_Station, "Value", "Value"),
+                         "- Va rog sa selectati statia -",
+                         new { @class = "form-control", @style = "width: 250px" })
+
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salveaza" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+</div>
