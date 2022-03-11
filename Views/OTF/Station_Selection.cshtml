@@ -11,6 +11,13 @@
         margin-top: -50px;
         margin-left: -100px;
     }
+    .dr {
+        position: fixed;
+        top: 40%;
+        left: 52%;
+        margin-top: -50px;
+        margin-left: -100px;
+    }
 </style>
 
 <div class="row, centered">
@@ -25,7 +32,7 @@
 
                 @Html.ValidationMessageFor(model => model.Name)
             </div>
-            <div class="form-group">
+            <div class="form-group dr">
                 <input type="submit" value="Salveaza" class="btn btn-primary">
             </div>
         </form>
