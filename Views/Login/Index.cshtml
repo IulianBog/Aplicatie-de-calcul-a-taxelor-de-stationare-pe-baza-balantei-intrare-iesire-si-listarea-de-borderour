@@ -1,8 +1,15 @@
 ﻿@model Proiect.Models.UserModel
+   
+ <style>
+    .windows {
+        width: 900px;
+    }
+ </style>
+
 
 <h4>Introduceti datele contului</h4>
 <hr />
-<div class="row">
+<div class="row windows">
     <div class="col-md-4">
         <form asp-action="ProcessLogin">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>

@@ -1,10 +1,25 @@
-﻿@{
+﻿@model Proiect.Models.TransactionModel
+@{
     ViewBag.MessageOTF = "----OTF nu a fost aleas inca----";
     ViewBag.MessageStation = "----Statia nu a fost aleasa inca----";
 }
 <!DOCTYPE html>
 
+<meta name="viewport" content="width=device-width" />
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+
 <style>
+    body {
+        font-family: 'Open Sans', sans-serif;
+        color: black;
+    }
+
+    .container {
+        display: flex;
+    }
+
     .right {
         position: fixed;
         top: 20%;
@@ -19,28 +34,31 @@
 
     .down_left {
         position: fixed;
-        top: 80%;
+        top: 78%;
         left: 10%;
     }
 
     .down_right {
         position: fixed;
-        top: 80%;
-        left: 50%;
+        top: 85%;
+        left: 75%;
+        margin-top: -50px;
+        margin-left: -100px;
     }
 
     .centered {
         position: fixed;
         top: 50%;
-        left: 50%;
+        left: 20%;
         margin-top: -50px;
         margin-left: -100px;
     }
 
     .centerd_down {
         position: fixed;
-        top: 75%;
-        left: 50%;
+        top: 85%;
+        left: 30%;
+        width: 425px;
         margin-top: -50px;
         margin-left: -100px;
     }
@@ -50,72 +68,189 @@
 
 <body>
 
+    @* Dropdown left *@
     <div class="form-row col-md-4 left">
         <label for="form-check-label"> Statie: &nbsp;</label>
 
         @if (ViewBag.Station == null)
 
         {
-    <span>@ViewBag.MessageStation&nbsp;</span>
+            <span>@ViewBag.MessageStation&nbsp;</span>
 
         }
         else
 
         {
-    <span>@ViewBag.Station &nbsp;</span>
+            <span>@ViewBag.Station &nbsp;</span>
         }
-        <a asp-action="Station_Selection">
-            <button type="button" class="btn btn-secondary"> Alegeti statia </button>
+        <a asp-action="Station_Selection" type="button" class="btn btn-secondary">
+            Alegeti statia
         </a>
     </div>
 
 
+    @* Dropdown right *@
     <div class="form-row col-md-4 right">
         <label for="form-check-label"> OTF:&nbsp;</label>
-       
-       @if(ViewBag.OTF == null)
-        
-        {     
-    <span>@ViewBag.MessageOTF&nbsp;</span>
+
+        @if (ViewBag.OTF == null)
+
+        {
+            <span>@ViewBag.MessageOTF&nbsp;</span>
 
         }
         else
 
         {
-    <span>@ViewBag.OTF &nbsp;</span>
+            <span>@ViewBag.OTF&nbsp;</span>
         }
-        <a asp-action="OTF_Selection">
-            <button type="button" class="btn btn-secondary"> Alegeti OTF </button>
+        <a asp-action="OTF_Selection" type="button" class="btn btn-secondary">
+            Alegeti OTF
         </a>
     </div>
 
-    <div class="centerd_down">
-        <div class="form-row align-items-center">
-            <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Numar tren">
-        </div>
 
-        <div class="form-row align-items-center">
-            <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Numar vagoane">
+    @* Write rows *@
+    <div class="centerd_down form-row align-items-center">
+        <div class="form-row col">
+            <input type="text" asp-for="Train_Number" class="form-control mb-2" placeholder="Numar tren" />
         </div>
-        <div class="form-row align-items-center">
-            <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Data - ora">
+        &nbsp;
+        <div class="form-row col">
+            <input type="text" asp-for="Vagon_Number" class="form-control mb-2" placeholder="Numar vagoane">
+        </div>
+        &nbsp;
+        <div class="form-row col">
+            <input type="text" asp-for="Data_Time" class="form-control mb-2" placeholder="Data - ora">
         </div>
     </div>
 
+
+    @* Check Button (@Html.RadioButtonFor(m => m.Sens,"s"))*@
     <div class="down_left">
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+            <input checked="checked"
+                   id="Sens"
+                   name="Sens"
+                   type="radio"
+                   value="s" />
             <label class="form-check-label">
                 Sosiri
             </label>
         </div>
+
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+            <input id="Sens"
+                   name="Sens"
+                   type="radio"
+                   value="p" />
             <label class="form-check-label">
                 Plecari
             </label>
         </div>
     </div>
+
+
+
+    @* Buttons *@
+    <div class="form-row down_right">
+        <div class="form-row col">
+            <a asp-action="" method="post" type="button" class="btn btn-success">
+                <strong>Salveaza</strong>
+            </a>
+        </div>
+        &nbsp;
+        <div class="form-row col">
+            <a asp-action="Sterge_ViewBag" type="button" class="btn btn-warning">
+                <strong>Renunta</strong>
+            </a>
+        </div>
+        &nbsp;
+        <div class="form-row col">
+            <a asp-action="Station_Selection" type="button" class="btn btn-danger">
+                <strong>Sterge</strong>
+            </a>
+        </div>
+    </div>
+
+
+    @*
+        @using (Html.BeginForm())
+        {
+            <table class="table-condensed">
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(, new { id = "txtId", Value = @Model.Id, style = "display:none" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Name:</span>
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.Name, new { id = "txtName", Value = @Model.Name })
+                        &nbsp;&nbsp;
+                        @Html.ValidationMessageFor(m => m.Name)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Department:</span>
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.Department, new { id = "txtDepartment", Value = @Model.Department })
+                        &nbsp;&nbsp;
+                        @Html.ValidationMessageFor(m => m.Department)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Designation:</span>
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.Designation, new { id = "txtDesignation", Value = @Model.Designation })
+                        &nbsp;&nbsp;
+                        @Html.ValidationMessageFor(m => m.Designation)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(m => m.StmtType, new { id = "txtStmtType", Value = @Model.StmtType, style = "display:none" })
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <button value="submit" class="btn btn-primary" title="submit">@Model.buttonText</button>
+                    </td>
+                </tr>
+
+                </table>
+                }
+        <h5>@Model.Message</h5>
+                <table class="table-condensed table-bordered">
+                    <tr>
+                        <th align="center" class="text-center">ID</th>
+                        <th align="center" class="text-center">Name</th>
+                        <th align="center" class="text-center">Designation</th>
+                        <th align="center" class="text-center">Department</th>
+                        <th align="center" class="text-center">Edit</th>
+                        <th align="center" class="text-center">Delete</th>
+                    </tr>
+                    @foreach (var e in Model.lstEmployees)
+                    {
+                        <tr>
+                            <td align="center"><b>@e.Id</b></td>
+                            <td align="center">@e.Name</td>
+                            <td align="center">@e.Designation</td>
+                            <td align="center">@e.Department</td>
+                            <td align="center"><a class="btn btn-success" href="http://localhost:8508/employee?id=@e.Id&type=e"
+                               ><i class="fa fa-edit"></i></a></td>
+                            <td align="center"><a class="btn btn-danger" href="http://localhost:8508/employee?id=@e.Id&type=d"
+                               ><i class="fa fa-trash"></i></a></td>
+                        </tr>
+                    }
+                </table>
+    *@
 
 
 </body>

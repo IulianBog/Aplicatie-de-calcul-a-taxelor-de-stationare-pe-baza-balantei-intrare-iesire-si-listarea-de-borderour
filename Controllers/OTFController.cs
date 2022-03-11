@@ -9,6 +9,7 @@ using System.Data;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 
+
 namespace Proiect.Controllers
 {
     public class OTFController : Controller
@@ -47,6 +48,19 @@ namespace Proiect.Controllers
         public IActionResult Update_OTF(OTFModel otf)
         {
             HttpContext.Session.SetString("OTF", otf.Name.ToString());
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Sterge_ViewBag()
+        {
+            HttpContext.Session.Remove("Station");
+            HttpContext.Session.Remove("OTF");
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Sens()
+        {
+
             return RedirectToAction("Index");
         }
     }
