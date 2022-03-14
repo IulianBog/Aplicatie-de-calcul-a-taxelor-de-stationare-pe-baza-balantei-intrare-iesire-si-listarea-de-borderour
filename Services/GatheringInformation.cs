@@ -285,9 +285,9 @@ namespace Proiect.Services
             }
         }
 
-        public Dictionary<string,TransactionModel>GetTransaction()
+        public List<TransactionModel>GetTransaction()
         {
-            Dictionary<string,TransactionModel> transaction = new Dictionary<string,TransactionModel>();
+            List<TransactionModel> transaction = new List<TransactionModel>();
 
             using (OracleConnection con = new OracleConnection(conString))
             {
@@ -301,13 +301,13 @@ namespace Proiect.Services
                     cmd.BindByName = true;
                     OracleDataReader reader = cmd.ExecuteReader();
 
-                    if (reader.Read())
+                    while (reader.Read())
                     {
-                        transaction.Add("Transaction", new TransactionModel
+                        transaction.Add(new TransactionModel
                         {
                             Id = (int)reader.GetDecimal("ID"),
                             Sens = (string)reader.GetString("SENS"),
-                            Data_Time = (string)reader.GetString("DATA_TIME"),
+                            Date_Time = (string)reader.GetString("DATE_TIME"),
                             Train_Number = (string)reader.GetString("TRAIN_NUMBER"),
                             Vagon_Number = (int)reader.GetDecimal("VAGON_NUMBER"),
                             Time_Stamp = (DateTime)reader.GetDateTime("TIME_STAMP"),

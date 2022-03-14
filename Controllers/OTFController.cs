@@ -16,9 +16,12 @@ namespace Proiect.Controllers
     {
         public IActionResult Index()
         {
+            CollectionDataModel tabel = new CollectionDataModel();
+            GatheringInformation gatheringinformation = new GatheringInformation();
+            tabel.Transactions = gatheringinformation.GetTransaction();
             ViewBag.Station = HttpContext.Session.GetString("Station");
             ViewBag.OTF = HttpContext.Session.GetString("OTF");
-            return View();
+            return View(tabel); 
         }
 
         public IActionResult OTF_Selection()

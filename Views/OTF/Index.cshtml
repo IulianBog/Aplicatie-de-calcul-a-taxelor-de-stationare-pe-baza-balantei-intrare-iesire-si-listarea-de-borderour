@@ -1,4 +1,4 @@
-﻿@model Proiect.Models.TransactionModel
+﻿@model Proiect.Models.CollectionDataModel
 @{
     ViewBag.MessageOTF = "----OTF nu a fost aleas inca----";
     ViewBag.MessageStation = "----Statia nu a fost aleasa inca----";
@@ -46,13 +46,6 @@
         margin-left: -100px;
     }
 
-    .centered {
-        position: fixed;
-        top: 50%;
-        left: 20%;
-        margin-top: -50px;
-        margin-left: -100px;
-    }
 
     .centerd_down {
         position: fixed;
@@ -62,6 +55,36 @@
         margin-top: -50px;
         margin-left: -100px;
     }
+
+
+    #table-wrapper {
+        max-width:100%;
+        position: relative;
+        right:25px;
+    }
+
+    #table-scroll {
+        height: 350px;
+        overflow: auto;
+        margin-top: 150px;
+        -webkit-overflow-scrolling:touch;
+    }
+
+    #table-wrapper table {
+        width: 100%;
+        table-layout:fixed;
+    }
+
+
+
+    #table-wrapper table .text {
+        position: absolute;
+        top: 50%;
+        height: 100px;
+        width: 100%;
+
+    }
+
 </style>
 
 <html>
@@ -112,18 +135,19 @@
 
     @* Write rows *@
     <div class="centerd_down form-row align-items-center">
-        <div class="form-row col">
-            <input type="text" asp-for="Train_Number" class="form-control mb-2" placeholder="Numar tren" />
+            <div class="form-row col">
+                <input type="text"  @*asp-for="Train_Number"*@ class="form-control mb-2" placeholder="Numar tren" />
+            </div>
+            &nbsp;
+            <div class="form-row col">
+                <input type="text" @*asp-for="Vagon_Number"*@ class="form-control mb-2" placeholder="Numar vagoane">
+            </div>
+            &nbsp;
+            <div class="form-row col">
+                <input type="text" @*asp-for="Data_Time"*@ class="form-control mb-2" placeholder="Data - ora">
+            </div>
         </div>
-        &nbsp;
-        <div class="form-row col">
-            <input type="text" asp-for="Vagon_Number" class="form-control mb-2" placeholder="Numar vagoane">
-        </div>
-        &nbsp;
-        <div class="form-row col">
-            <input type="text" asp-for="Data_Time" class="form-control mb-2" placeholder="Data - ora">
-        </div>
-    </div>
+
 
 
     @* Check Button (@Html.RadioButtonFor(m => m.Sens,"s"))*@
@@ -161,6 +185,12 @@
         </div>
         &nbsp;
         <div class="form-row col">
+            <a asp-action="" type="button" class="btn btn-primary">
+                <strong>Adaugare</strong>
+            </a>
+        </div>
+        &nbsp;
+        <div class="form-row col">
             <a asp-action="Sterge_ViewBag" type="button" class="btn btn-warning">
                 <strong>Renunta</strong>
             </a>
@@ -171,88 +201,50 @@
                 <strong>Sterge</strong>
             </a>
         </div>
+
     </div>
 
 
-    @*
-        @using (Html.BeginForm())
-        {
-            <table class="table-condensed">
-                <tr>
-                    <td>
-                        @Html.TextBoxFor(, new { id = "txtId", Value = @Model.Id, style = "display:none" })
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span>Name:</span>
-                    </td>
-                    <td>
-                        @Html.TextBoxFor(m => m.Name, new { id = "txtName", Value = @Model.Name })
-                        &nbsp;&nbsp;
-                        @Html.ValidationMessageFor(m => m.Name)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span>Department:</span>
-                    </td>
-                    <td>
-                        @Html.TextBoxFor(m => m.Department, new { id = "txtDepartment", Value = @Model.Department })
-                        &nbsp;&nbsp;
-                        @Html.ValidationMessageFor(m => m.Department)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span>Designation:</span>
-                    </td>
-                    <td>
-                        @Html.TextBoxFor(m => m.Designation, new { id = "txtDesignation", Value = @Model.Designation })
-                        &nbsp;&nbsp;
-                        @Html.ValidationMessageFor(m => m.Designation)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.TextBoxFor(m => m.StmtType, new { id = "txtStmtType", Value = @Model.StmtType, style = "display:none" })
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center">
-                        <button value="submit" class="btn btn-primary" title="submit">@Model.buttonText</button>
-                    </td>
-                </tr>
-
-                </table>
-                }
-        <h5>@Model.Message</h5>
-                <table class="table-condensed table-bordered">
+    @* Tabel *@
+    <div id="table-wrapper">
+        <div id="table-scroll">
+            <table class="table table-hover">
+                <thead>
                     <tr>
-                        <th align="center" class="text-center">ID</th>
-                        <th align="center" class="text-center">Name</th>
-                        <th align="center" class="text-center">Designation</th>
-                        <th align="center" class="text-center">Department</th>
-                        <th align="center" class="text-center">Edit</th>
-                        <th align="center" class="text-center">Delete</th>
+                        <th align="center" class="">Check Box</th>
+                        <th align="center">Plecari / Sosiri</th>
+                        <th align="center">Nr. tren</th>
+                        <th align="center">Nr. vagoane</th>
+                        <th align="center">Data - Ora</th>
                     </tr>
-                    @foreach (var e in Model.lstEmployees)
+                </thead>
+                <tbody>
+                    @foreach (var tabel in Model.Transactions)
                     {
                         <tr>
-                            <td align="center"><b>@e.Id</b></td>
-                            <td align="center">@e.Name</td>
-                            <td align="center">@e.Designation</td>
-                            <td align="center">@e.Department</td>
-                            <td align="center"><a class="btn btn-success" href="http://localhost:8508/employee?id=@e.Id&type=e"
-                               ><i class="fa fa-edit"></i></a></td>
-                            <td align="center"><a class="btn btn-danger" href="http://localhost:8508/employee?id=@e.Id&type=d"
-                               ><i class="fa fa-trash"></i></a></td>
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="gridCheck">
+                                </div>
+                            </td>
+                            @if (@tabel.Sens == "1")
+                            {
+                                <td align="left">Soseste</td>
+                            }
+                            else
+                            {
+                                <td align="left">Pleaca</td>
+                            }
+                            <td align="left">@tabel.Train_Number</td>
+                            <td align="left">@tabel.Vagon_Number</td>
+                            <td align="left">@tabel.Date_Time</td>
                         </tr>
                     }
-                </table>
-    *@
+                </tbody>
 
-
+            </table>
+        </div>
+    </div>
 </body>
 
 </html>

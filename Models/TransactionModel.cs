@@ -13,7 +13,7 @@ namespace Proiect.Models
 
         public string Sens { get; set; }
 
-        public string Data_Time { get; set; }
+        public string Date_Time { get; set; }
 
         public string Train_Number { get; set; }
 

@@ -12,6 +12,10 @@ namespace Proiect.Models
         public int Id { get; set; }
 
         public int Balance_Wagons { get; set; }
+        
+        public string OTF_Id { get; set; }
+
+        public string Station_Id { get; set; }
 
         public string Data_Check { get; set; }
 
