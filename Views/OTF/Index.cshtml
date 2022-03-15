@@ -87,66 +87,96 @@
 
 </style>
 
-<html>
-
 <body>
-
     @* Dropdown left *@
     <div class="form-row col-md-4 left">
         <label for="form-check-label"> Statie: &nbsp;</label>
+        @Html.DropDownListFor(model => Model.SelectionStation,
+                            new SelectList(Model.Stations, "Value", "Text"),
+                            "Va rog sa selectati Statia",
+                            new { @class = "form-control", @style = "width: 250px" })
+        @Html.ValidationMessageFor(model => model.SelectionStation)
 
-        @if (ViewBag.Station == null)
 
-        {
-            <span>@ViewBag.MessageStation&nbsp;</span>
-
-        }
-        else
-
-        {
-            <span>@ViewBag.Station &nbsp;</span>
-        }
-        <a asp-action="Station_Selection" type="button" class="btn btn-secondary">
-            Alegeti statia
-        </a>
     </div>
 
 
     @* Dropdown right *@
     <div class="form-row col-md-4 right">
-        <label for="form-check-label"> OTF:&nbsp;</label>
+    <label for="form-check-label"> OTF:&nbsp;</label>
 
-        @if (ViewBag.OTF == null)
-
-        {
-            <span>@ViewBag.MessageOTF&nbsp;</span>
-
-        }
-        else
-
-        {
-            <span>@ViewBag.OTF&nbsp;</span>
-        }
-        <a asp-action="OTF_Selection" type="button" class="btn btn-secondary">
-            Alegeti OTF
-        </a>
+    @Html.DropDownListFor(model => Model.SelectionOTF,
+                             new SelectList(Model.OTFs, "Value", "Text"),
+                             "Va rog sa selectati OTF-istul",
+                             new { @class = "form-control", @style = "width: 250px" })
+    @Html.ValidationMessageFor(model => model.SelectionOTF)
     </div>
 
-
+<div>
     @* Write rows *@
-    <div class="centerd_down form-row align-items-center">
-            <div class="form-row col">
-                <input type="text"  @*asp-for="Train_Number"*@ class="form-control mb-2" placeholder="Numar tren" />
-            </div>
-            &nbsp;
-            <div class="form-row col">
-                <input type="text" @*asp-for="Vagon_Number"*@ class="form-control mb-2" placeholder="Numar vagoane">
-            </div>
-            &nbsp;
-            <div class="form-row col">
-                <input type="text" @*asp-for="Data_Time"*@ class="form-control mb-2" placeholder="Data - ora">
-            </div>
+<div class="centerd_down form-row align-items-center">
+    <div class="form-row col">
+        <input type="text" @*asp-for="Train_Number"*@ class="form-control mb-2" placeholder="Numar tren" />
+    </div>
+    &nbsp;
+    <div class="form-row col">
+        <input type="text" @*asp-for="Vagon_Number"*@ class="form-control mb-2" placeholder="Numar vagoane">
+    </div>
+    &nbsp;
+    <div class="form-row col">
+        <input type="text" @*asp-for="Data_Time"*@ class="form-control mb-2" placeholder="Data - ora">
+    </div>
+</div>
+
+    @* Buttons *@
+    <div class="form-row down_right">
+        <div class="form-row col">
+            <a asp-action="" method="post" type="button" class="btn btn-success">
+                <strong>Salveaza</strong>
+            </a>
         </div>
+        &nbsp;
+
+        <div class="form-row col">
+            <a asp-action="Create_Transaction" type="button"
+               class="btn btn-primary">
+                <strong>Adaugare</strong>
+            </a>
+        </div>
+        &nbsp;
+
+        <div class="form-row col">
+            <a asp-action="Sterge_ViewBag" type="button" class="btn btn-warning">
+                <strong>Renunta</strong>
+            </a>
+        </div>
+
+    </div>
+
+    @* Check Button (@Html.RadioButtonFor(m => m.Sens,"s"))*@
+    <div class="down_left">
+        <div class="form-check">
+            <input checked="checked"
+                   id="Sens"
+                   name="Sens"
+                   type="radio"
+                   value="s" />
+            <label class="form-check-label">
+                Sosiri
+            </label>
+        </div>
+
+        <div class="form-check">
+            <input id="Sens"
+                   name="Sens"
+                   type="radio"
+                   value="p" />
+            <label class="form-check-label">
+                Plecari
+            </label>
+        </div>
+    </div>
+</div>
 
 
 
@@ -176,27 +206,7 @@
 
 
 
-    @* Buttons *@
-    <div class="form-row down_right">
-        <div class="form-row col">
-            <a asp-action="" method="post" type="button" class="btn btn-success">
-                <strong>Salveaza</strong>
-            </a>
-        </div>
-        &nbsp;
-        <div class="form-row col">
-            <a asp-action="" type="button" class="btn btn-primary">
-                <strong>Adaugare</strong>
-            </a>
-        </div>
-        &nbsp;
-        <div class="form-row col">
-            <a asp-action="Sterge_ViewBag" type="button" class="btn btn-warning">
-                <strong>Renunta</strong>
-            </a>
-        </div>
-
-    </div>
+ 
 
 
     @* Tabel *@
@@ -205,18 +215,19 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-
+                        <th align="center">Id tranzactie</th>
                         <th align="center">Plecari / Sosiri</th>
                         <th align="center">Nr. tren</th>
                         <th align="center">Nr. vagoane</th>
                         <th align="center">Data - Ora</th>
-                        <th align="center">Stergere</th>
+                        <th align="center">Actiuni</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var tabel in Model.Transactions)
                     {
-                         <tr>
+                        <tr>
+                            <td align="left">@tabel.Id</td>
 
                             @if (@tabel.Sens == "1")
                             {
@@ -232,19 +243,23 @@
                             <td align="left">
                                 <div class="form-row col">
                                     <a asp-action="Logical_Delete" type="button"
-                                       class="btn btn-danger" value=@tabel.Id>
+                                       class="btn btn-danger" asp-route-id="@tabel.Id">
                                         <strong>Sterge</strong>
                                     </a>
                                 </div>
                             </td>
-                         </tr>
+                            <td align="left">
+                                <div class="form-row col">
+                                    <a asp-action="Update" type="button"
+                                       class="btn btn-info" asp-route-id="@tabel.Id">
+                                        <strong>Edit</strong>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
                     }
-
                 </tbody>
-
             </table>
         </div>
     </div>
 </body>
-
-</html>

@@ -54,6 +54,82 @@ namespace Proiect.Services
             }
         }
 
+        public IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> GetOTFs()
+        {
+            List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> otf = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>();
+
+            using (OracleConnection con = new OracleConnection(conString))
+            {
+                sqlStatement = "SELECT * FROM C##TAXARE1.OTF";
+                OracleCommand cmd = new OracleCommand(sqlStatement, con);
+
+                try
+                {
+                    con.Open();
+                    cmd.BindByName = true;
+                    OracleDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        otf.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                        {
+                            Value = reader.GetString("ID"),
+                            Text = reader.GetString("NAME")
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    if (null != con)
+                        con.Close();
+                }
+
+                return otf.AsEnumerable();
+            }
+        }
+        public IEnumerable<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> GetStations()
+        {
+            List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> station = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>();
+
+            using (OracleConnection con = new OracleConnection(conString))
+            {
+                sqlStatement = "SELECT * FROM C##TAXARE1.STATION";
+                OracleCommand cmd = new OracleCommand(sqlStatement, con);
+
+                try
+                {
+                    con.Open();
+                    cmd.BindByName = true;
+                    OracleDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        station.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                        {
+                            Value = (string)reader.GetString("ID"),
+                            Text = (string)reader.GetString("NAME")
+                        });
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                finally
+                {
+                    if (null != con)
+                        con.Close();
+                }
+
+                return station.AsEnumerable();
+            }
+        }
+
         public Dictionary<string,string> GetOTF()
             {
                 Dictionary<string, string> otf = new Dictionary<string, string>();
@@ -253,7 +329,7 @@ namespace Proiect.Services
             using (OracleConnection con = new OracleConnection(conString))
             {
 
-                sqlStatement = "SELECT * FROM C##TAXARE1.TRANSACTION";
+                sqlStatement = "SELECT * FROM C##TAXARE1.TRANSACTION WHERE C##TAXARE1.TRANSACTION.IS_DELETED = 0";
                 OracleCommand cmd = new OracleCommand(sqlStatement, con);
 
                 try
@@ -274,8 +350,7 @@ namespace Proiect.Services
                             Time_Stamp = (DateTime)reader.GetDateTime("TIME_STAMP"),
                             User_Id = (int)reader.GetDecimal("USER_ID"),
                             OTF_Id = (string)reader.GetString("OTF_ID"),
-                            Station_Id = (string)reader.GetString("Station_ID"),
-                            Is_Deleted = (int)reader.GetDecimal("IS_DELETED")
+                            Station_Id = (string)reader.GetString("Station_ID")
                         });
                     }
                 }

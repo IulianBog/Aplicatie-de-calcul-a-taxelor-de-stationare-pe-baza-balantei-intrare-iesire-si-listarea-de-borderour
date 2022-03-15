@@ -19,8 +19,14 @@ namespace Proiect.Controllers
             CollectionDataModel tabel = new CollectionDataModel();
             GatheringInformation gatheringinformation = new GatheringInformation();
             tabel.Transactions = gatheringinformation.GetTransaction();
+
             ViewBag.Station = HttpContext.Session.GetString("Station");
             ViewBag.OTF = HttpContext.Session.GetString("OTF");
+
+            List<OTFModel> Selectie_OTF = new List<OTFModel>();
+            tabel.OTFs = gatheringinformation.GetOTFs();
+            tabel.Stations = gatheringinformation.GetStations();
+
             return View(tabel); 
         }
 
@@ -63,12 +69,30 @@ namespace Proiect.Controllers
 
         public IActionResult Logical_Delete(TransactionModel transaction)
         { 
-            Logical_Delete logical = new Logical_Delete();
-
-            HttpContext.Session.SetInt32("Stergere_Id", transaction.Id);
-            ViewBag.StergereId = HttpContext.Session.GetInt32("Stergere_Id");
+            CRUD crud = new CRUD();
             
-            //logical.Delete_Transactions(ViewBag.StergereId);
+            crud.Delete_Transactions(transaction.Id);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult Create_Transaction(CollectionDataModel collection)
+        {
+            CRUD crud = new CRUD();
+            
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Edit(TransactionModel transaction)
+        {
+            return View();
+        }
+        public IActionResult Update(TransactionModel transaction)
+        {
+            CRUD crud = new CRUD();
+
+            crud.Update_Transactions(transaction.Id);
 
             return RedirectToAction("Index");
         }
