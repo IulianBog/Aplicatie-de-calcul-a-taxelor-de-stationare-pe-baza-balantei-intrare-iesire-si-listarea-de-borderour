@@ -195,12 +195,6 @@
                 <strong>Renunta</strong>
             </a>
         </div>
-        &nbsp;
-        <div class="form-row col">
-            <a asp-action="Station_Selection" type="button" class="btn btn-danger">
-                <strong>Sterge</strong>
-            </a>
-        </div>
 
     </div>
 
@@ -211,22 +205,18 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th align="center" class="">Check Box</th>
+
                         <th align="center">Plecari / Sosiri</th>
                         <th align="center">Nr. tren</th>
                         <th align="center">Nr. vagoane</th>
                         <th align="center">Data - Ora</th>
+                        <th align="center">Stergere</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var tabel in Model.Transactions)
                     {
-                        <tr>
-                            <td>
-                                <div align="left" class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="gridCheck">
-                                </div>
-                            </td>
+                         <tr>
 
                             @if (@tabel.Sens == "1")
                             {
@@ -239,8 +229,17 @@
                             <td align="left">@tabel.Train_Number</td>
                             <td align="left">@tabel.Vagon_Number</td>
                             <td align="left">@tabel.Date_Time</td>
-                        </tr>
+                            <td align="left">
+                                <div class="form-row col">
+                                    <a asp-action="Logical_Delete" type="button"
+                                       class="btn btn-danger" value=@tabel.Id>
+                                        <strong>Sterge</strong>
+                                    </a>
+                                </div>
+                            </td>
+                         </tr>
                     }
+
                 </tbody>
 
             </table>

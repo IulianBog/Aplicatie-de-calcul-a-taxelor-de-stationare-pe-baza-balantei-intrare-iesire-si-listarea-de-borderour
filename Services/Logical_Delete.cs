@@ -14,18 +14,16 @@ namespace Proiect.Services
         readonly string conString = "User Id=C##TAXARE1;Password=123456;Data Source=localhost:1521/xe;Connection Timeout=30;";
         private string sqlStatement;
 
-        public void Delete_Transactions(TransactionModel transactionModel , List<TransactionModel> transactions)
+        public void Delete_Transactions(string id)
         {
 
             using OracleConnection con = new OracleConnection(conString);
-            {
-                foreach (var i in transactions)
-                {
+            { 
                     sqlStatement = "UPDATE C##TAXARE1.TRANSACTION SET  C##TAXARE1.TRANSACTION.IS_DELETED = 1 " +
                        "WHERE C##TAXARE1.TRANSACTION.ID =  :Transaction_Id";
 
                     OracleCommand cmd = new OracleCommand(sqlStatement, con);
-                    cmd.Parameters.Add(new OracleParameter("Transaction_Id", transactionModel.Id));
+                    cmd.Parameters.Add(new OracleParameter("Transaction_Id", id));
 
                     try
                     {
@@ -43,7 +41,7 @@ namespace Proiect.Services
                         if (null != con)
                             con.Close();
                     }
-                }
+                
             }
           
         }

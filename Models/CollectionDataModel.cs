@@ -26,6 +26,8 @@ namespace Proiect.Models
 
         public Dictionary<string, Trafic_TypeModel> Trafic_Types { get; set; }
 
+        public List<string> Is_deleted { get; set; }
+
         public List<TransactionModel> Transactions { get; set; }
 
     }

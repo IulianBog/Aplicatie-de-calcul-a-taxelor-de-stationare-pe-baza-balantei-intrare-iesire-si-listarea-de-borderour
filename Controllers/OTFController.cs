@@ -61,8 +61,14 @@ namespace Proiect.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Sens()
-        {
+        public IActionResult Logical_Delete(TransactionModel transaction)
+        { 
+            Logical_Delete logical = new Logical_Delete();
+
+            HttpContext.Session.SetInt32("Stergere_Id", transaction.Id);
+            ViewBag.StergereId = HttpContext.Session.GetInt32("Stergere_Id");
+            
+            //logical.Delete_Transactions(ViewBag.StergereId);
 
             return RedirectToAction("Index");
         }

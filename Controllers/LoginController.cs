@@ -55,6 +55,7 @@ namespace Proiect.Controllers
         {
             ViewBag.user = HttpContext.Session.GetString("User");
             ViewBag.session = HttpContext.Session.GetString("User_Id");
+
             if (userModel.UserName == ViewBag.user)
             {
                 UserDAO userDAO = new UserDAO();
