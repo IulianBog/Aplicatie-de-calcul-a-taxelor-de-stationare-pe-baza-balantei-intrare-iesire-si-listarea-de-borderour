@@ -89,46 +89,7 @@ namespace Proiect.Services
                     return otf;
                 }
             }
-        /*   
-       public OTFModel GetOTF()
-       {
-           OTFModel otf = new OTFModel();
-
-           using (OracleConnection con = new OracleConnection(conString))
-           {
-               sqlStatement = "SELECT * FROM C##TAXARE1.OTF";
-               OracleCommand cmd = new OracleCommand(sqlStatement, con);
-
-               try
-               {
-                   con.Open();
-                   cmd.BindByName = true;
-                   OracleDataReader reader = cmd.ExecuteReader();
-
-                   while (reader.Read())
-                   {
-
-
-                       otf.Id = (string)reader.GetString("ID");
-                       otf.Name = (string)reader.GetString("NAME");
-                       otf.Trafic_Type_Id = (string)reader.GetString("TRAFIC_TYPE_ID");
-                   }
-               }
-               catch (Exception e)
-               {
-                   Console.WriteLine(e.Message);
-               }
-               finally
-               {
-                   if (null != con)
-                       con.Close();
-               }
-
-               return otf;
-           }
-       }*/
-
-
+      
         public Dictionary<string,string>GetStation()
         {
             Dictionary<string,string> station = new Dictionary<string,string>();
@@ -313,7 +274,8 @@ namespace Proiect.Services
                             Time_Stamp = (DateTime)reader.GetDateTime("TIME_STAMP"),
                             User_Id = (int)reader.GetDecimal("USER_ID"),
                             OTF_Id = (string)reader.GetString("OTF_ID"),
-                            Station_Id = (string)reader.GetString("Station_ID")
+                            Station_Id = (string)reader.GetString("Station_ID"),
+                            Is_Deleted = (int)reader.GetDecimal("IS_DELETED")
                         });
                     }
                 }
