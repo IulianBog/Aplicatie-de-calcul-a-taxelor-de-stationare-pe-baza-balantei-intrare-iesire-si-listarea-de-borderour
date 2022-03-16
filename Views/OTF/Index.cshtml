@@ -3,11 +3,9 @@
     ViewBag.MessageOTF = "----OTF nu a fost aleas inca----";
     ViewBag.MessageStation = "----Statia nu a fost aleasa inca----";
 }
+
 <!DOCTYPE html>
 
-<meta name="viewport" content="width=device-width" />
-<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
 
 <style>
@@ -88,6 +86,7 @@
 </style>
 
 <body>
+
     @* Dropdown left *@
     <div class="form-row col-md-4 left">
         <label for="form-check-label"> Statie: &nbsp;</label>
@@ -103,35 +102,20 @@
 
     @* Dropdown right *@
     <div class="form-row col-md-4 right">
-    <label for="form-check-label"> OTF:&nbsp;</label>
+        <label for="form-check-label"> OTF:&nbsp;</label>
 
-    @Html.DropDownListFor(model => Model.SelectionOTF,
-                             new SelectList(Model.OTFs, "Value", "Text"),
-                             "Va rog sa selectati OTF-istul",
-                             new { @class = "form-control", @style = "width: 250px" })
-    @Html.ValidationMessageFor(model => model.SelectionOTF)
+        @Html.DropDownListFor(model => Model.SelectionOTF,
+                                 new SelectList(Model.OTFs, "Value", "Text"),
+                                 "Va rog sa selectati OTF-istul",
+                                 new { @class = "form-control", @style = "width: 250px" })
+        @Html.ValidationMessageFor(model => model.SelectionOTF)
     </div>
 
-<div>
-    @* Write rows *@
-<div class="centerd_down form-row align-items-center">
-    <div class="form-row col">
-        <input type="text" @*asp-for="Train_Number"*@ class="form-control mb-2" placeholder="Numar tren" />
-    </div>
-    &nbsp;
-    <div class="form-row col">
-        <input type="text" @*asp-for="Vagon_Number"*@ class="form-control mb-2" placeholder="Numar vagoane">
-    </div>
-    &nbsp;
-    <div class="form-row col">
-        <input type="text" @*asp-for="Data_Time"*@ class="form-control mb-2" placeholder="Data - ora">
-    </div>
-</div>
 
     @* Buttons *@
     <div class="form-row down_right">
         <div class="form-row col">
-            <a asp-action="" method="post" type="button" class="btn btn-success">
+            <a asp-action="Update" method="post" type="button" class="btn btn-success">
                 <strong>Salveaza</strong>
             </a>
         </div>
@@ -153,6 +137,31 @@
 
     </div>
 
+
+
+    @* Write rows *@
+
+    <div class="centerd_down form-row align-items-center">
+        <form asp-action="Update" method="post">
+            <div class="form-row col">
+                <input type="text" asp-for="@ViewData["Nr_Train"]"
+                       class="form-control" placeholder="Numar tren" />
+            </div>
+            &nbsp;
+
+            <div class="form-row col">
+                <input type="text" asp-for="@ViewData["Nr_Vagone"]"
+                       class="form-control" placeholder="Numar vagoane">
+            </div>
+            &nbsp;
+
+            <div class="form-row col">
+                <input type="text" asp-for="@ViewData["Data_Time"]"
+                       class="form-control" placeholder="Data - ora">
+            </div>
+        </form>
+    </div>
+
     @* Check Button (@Html.RadioButtonFor(m => m.Sens,"s"))*@
     <div class="down_left">
         <div class="form-check">
@@ -176,37 +185,10 @@
             </label>
         </div>
     </div>
-</div>
 
 
 
-    @* Check Button (@Html.RadioButtonFor(m => m.Sens,"s"))*@
-    <div class="down_left">
-        <div class="form-check">
-            <input checked="checked"
-                   id="Sens"
-                   name="Sens"
-                   type="radio"
-                   value="s" />
-            <label class="form-check-label">
-                Sosiri
-            </label>
-        </div>
 
-        <div class="form-check">
-            <input id="Sens"
-                   name="Sens"
-                   type="radio"
-                   value="p" />
-            <label class="form-check-label">
-                Plecari
-            </label>
-        </div>
-    </div>
-
-
-
- 
 
 
     @* Tabel *@
@@ -250,7 +232,7 @@
                             </td>
                             <td align="left">
                                 <div class="form-row col">
-                                    <a asp-action="Update" type="button"
+                                    <a asp-action="Edit" type="button"
                                        class="btn btn-info" asp-route-id="@tabel.Id">
                                         <strong>Edit</strong>
                                     </a>
@@ -262,4 +244,5 @@
             </table>
         </div>
     </div>
+
 </body>

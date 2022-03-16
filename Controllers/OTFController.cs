@@ -56,7 +56,7 @@ namespace Proiect.Controllers
 
         public IActionResult Update_OTF(OTFModel otf)
         {
-            HttpContext.Session.SetString("OTF", otf.Name.ToString());
+            HttpContext.Session.SetString ("OTF", otf.Name.ToString());
             return RedirectToAction("Index");
         }
 
@@ -64,6 +64,11 @@ namespace Proiect.Controllers
         {
             HttpContext.Session.Remove("Station");
             HttpContext.Session.Remove("OTF");
+
+            ViewData["Nr_Train"] = "";
+            ViewData["Nr_Vagone"] = "";
+            ViewData["Data_Time"] = "";
+
             return RedirectToAction("Index");
         }
 
@@ -86,13 +91,31 @@ namespace Proiect.Controllers
 
         public IActionResult Edit(TransactionModel transaction)
         {
-            return View();
-        }
-        public IActionResult Update(TransactionModel transaction)
-        {
             CRUD crud = new CRUD();
 
-            crud.Update_Transactions(transaction.Id);
+            ViewData["Nr_Train"] = crud.Fill_ViewBag_Train_Nr(transaction.Id);
+            ViewData["Nr_Vagone"] = crud.Fill_ViewBag_Vagone_Nr(transaction.Id);
+            ViewData["Data_Time"] = crud.Fill_ViewBag_Data_Time(transaction.Id);
+
+            /*
+            HttpContext.Session.SetString("Nr_Train",
+                                crud.Fill_ViewBag_Train_Nr(transaction.Id).ToString());
+            HttpContext.Session.SetInt32("Nr_Vagone",
+                                crud.Fill_ViewBag_Vagone_Nr(transaction.Id));
+            HttpContext.Session.SetString("Data_Time",
+                                crud.Fill_ViewBag_Data_Time(transaction.Id).ToString());
+            */
+
+            ViewBag.Nr_Train = HttpContext.Session.GetString("Nr_Train");
+            ViewBag.Nr_Vagone = HttpContext.Session.GetString("Nr_Vagone");
+            ViewBag.Data_Time = HttpContext.Session.GetString("Data_Time");
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Update(TransactionModel transaction)
+        {
+            
 
             return RedirectToAction("Index");
         }
