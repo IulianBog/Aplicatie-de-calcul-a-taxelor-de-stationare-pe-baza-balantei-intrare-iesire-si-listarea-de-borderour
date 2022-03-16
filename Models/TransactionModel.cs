@@ -27,8 +27,6 @@ namespace Proiect.Models
 
         public string Station_Id { get; set; }
 
-        public int Is_Deleted { get; set; }
-
-
+        public List<TransactionModel> lstTransactions { get; set; }
     }
 }

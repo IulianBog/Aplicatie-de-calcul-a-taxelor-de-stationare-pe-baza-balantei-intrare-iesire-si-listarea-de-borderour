@@ -1,248 +1,173 @@
-﻿@model Proiect.Models.CollectionDataModel
+﻿@*@page
+    @addTagHelper*, Microsoft.AspNetCore.Mvc.TagHelpers*@
+@model Proiect.Models.CollectionDataModel
 @{
-    ViewBag.MessageOTF = "----OTF nu a fost aleas inca----";
-    ViewBag.MessageStation = "----Statia nu a fost aleasa inca----";
+    //Layout = null;
 }
 
 <!DOCTYPE html>
 
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: black;
+        }
+    </style>
 
-
-<style>
-    body {
-        font-family: 'Open Sans', sans-serif;
-        color: black;
-    }
-
-    .container {
-        display: flex;
-    }
-
-    .right {
-        position: fixed;
-        top: 20%;
-        left: 60%;
-    }
-
-    .left {
-        position: fixed;
-        top: 20%;
-        left: 10%;
-    }
-
-    .down_left {
-        position: fixed;
-        top: 78%;
-        left: 10%;
-    }
-
-    .down_right {
-        position: fixed;
-        top: 85%;
-        left: 75%;
-        margin-top: -50px;
-        margin-left: -100px;
-    }
-
-
-    .centerd_down {
-        position: fixed;
-        top: 85%;
-        left: 30%;
-        width: 425px;
-        margin-top: -50px;
-        margin-left: -100px;
-    }
-
-
-    #table-wrapper {
-        max-width:100%;
-        position: relative;
-        right:25px;
-    }
-
-    #table-scroll {
-        height: 350px;
-        overflow: auto;
-        margin-top: 150px;
-        -webkit-overflow-scrolling:touch;
-    }
-
-    #table-wrapper table {
-        width: 100%;
-        table-layout:fixed;
-    }
-
-
-
-    #table-wrapper table .text {
-        position: absolute;
-        top: 50%;
-        height: 100px;
-        width: 100%;
-
-    }
-
-</style>
-
+</head>
 <body>
 
-    @* Dropdown left *@
-    <div class="form-row col-md-4 left">
-        <label for="form-check-label"> Statie: &nbsp;</label>
-        @Html.DropDownListFor(model => Model.SelectionStation,
-                            new SelectList(Model.Stations, "Value", "Text"),
-                            "Va rog sa selectati Statia",
-                            new { @class = "form-control", @style = "width: 250px" })
-        @Html.ValidationMessageFor(model => model.SelectionStation)
-
-
-    </div>
-
-
-    @* Dropdown right *@
-    <div class="form-row col-md-4 right">
-        <label for="form-check-label"> OTF:&nbsp;</label>
-
-        @Html.DropDownListFor(model => Model.SelectionOTF,
-                                 new SelectList(Model.OTFs, "Value", "Text"),
-                                 "Va rog sa selectati OTF-istul",
-                                 new { @class = "form-control", @style = "width: 250px" })
-        @Html.ValidationMessageFor(model => model.SelectionOTF)
-    </div>
-
-
-    @* Buttons *@
-    <div class="form-row down_right">
-        <div class="form-row col">
-            <a asp-action="Update" method="post" type="button" class="btn btn-success">
-                <strong>Salveaza</strong>
-            </a>
-        </div>
-        &nbsp;
-
-        <div class="form-row col">
-            <a asp-action="Create_Transaction" type="button"
-               class="btn btn-primary">
-                <strong>Adaugare</strong>
-            </a>
-        </div>
-        &nbsp;
-
-        <div class="form-row col">
-            <a asp-action="Sterge_ViewBag" type="button" class="btn btn-warning">
-                <strong>Renunta</strong>
-            </a>
-        </div>
-
-    </div>
-
-
-
-    @* Write rows *@
-
-    <div class="centerd_down form-row align-items-center">
-        <form asp-action="Update" method="post">
-            <div class="form-row col">
-                <input type="text" asp-for="@ViewData["Nr_Train"]"
-                       class="form-control" placeholder="Numar tren" />
-            </div>
-            &nbsp;
-
-            <div class="form-row col">
-                <input type="text" asp-for="@ViewData["Nr_Vagone"]"
-                       class="form-control" placeholder="Numar vagoane">
-            </div>
-            &nbsp;
-
-            <div class="form-row col">
-                <input type="text" asp-for="@ViewData["Data_Time"]"
-                       class="form-control" placeholder="Data - ora">
-            </div>
-        </form>
-    </div>
-
-    @* Check Button (@Html.RadioButtonFor(m => m.Sens,"s"))*@
-    <div class="down_left">
-        <div class="form-check">
-            <input checked="checked"
-                   id="Sens"
-                   name="Sens"
-                   type="radio"
-                   value="s" />
-            <label class="form-check-label">
-                Sosiri
-            </label>
-        </div>
-
-        <div class="form-check">
-            <input id="Sens"
-                   name="Sens"
-                   type="radio"
-                   value="p" />
-            <label class="form-check-label">
-                Plecari
-            </label>
-        </div>
-    </div>
-
-
-
-
-
-
-    @* Tabel *@
-    <div id="table-wrapper">
-        <div id="table-scroll">
-            <table class="table table-hover">
-                <thead>
+    <div>
+        @*<div style="background-color: #191919; width: 100%; padding: 5px">
+                <h2 style="color: #fff; text-transform: uppercase">Afisare tranzactii</h2>
+            </div>*@
+        <div style="background-color: #fff; width: 100%; padding: 10px 50px;">
+            @using (Html.BeginForm())
+            {
+                <table class="table-condensed">
                     <tr>
-                        <th align="center">Id tranzactie</th>
+                        <td>
+                            @ViewBag.Id
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <form method="post">
+                                <table>
+                                    <tr>
+                                        <td>Statia:&nbsp;&nbsp;</td>
+                                        <td>
+
+                                            @Html.DropDownListFor(m => @Model.Station_Id,
+                                                                            new SelectList(Model.Stations, "Value", "Text"),
+                                                                            "Va rog sa selectati Statia",
+                                                                            new { @class = "form-control", @style = "width: 250px", @onchange = "FillTransactions()" })
+
+                                            @Html.ValidationMessageFor(m => m.Station_Id)
+
+                                        </td>
+
+
+                                        <td>&nbsp;&nbsp;OTF:&nbsp;&nbsp;</td>
+                                        <td>
+                                            @Html.DropDownListFor(m => @Model.OTF_Id,
+                                                                               new SelectList(Model.OTFs, "Value", "Text"),
+                                                                               "Va rog sa selectati OTF",
+                                                                               new { @class = "form-control", @style = "width: 250px" })
+                                            @Html.ValidationMessageFor(m => m.OTF_Id)
+                                        </td>
+                                        <td>
+                                            &nbsp;&nbsp;<input type="submit" value="Salveaza" class="btn btn-primary" asp-action="setDrops">
+                                        </td>
+                                        <td>
+                                            &nbsp;&nbsp;<input type="submit" value="Listare" class="btn btn-info" asp-action="Borderouri">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>Numar tren:</span>
+                        </td>
+                        <td colspan="3">
+                            @Html.TextBoxFor(m => m.Train_Number, new { id = "txtTren", Value = @Model.Train_Number, @style = "width: 250px" })
+                            &nbsp;&nbsp;
+                            @Html.ValidationMessageFor(m => m.Train_Number)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>Numar vagone:</span>
+                        </td>
+                        <td colspan="3">
+                            @Html.TextBoxFor(m => m.Vagon_Number, new { id = "txtVagon", Value = @Model.Vagon_Number, @style = "width: 250px" })
+                            &nbsp;&nbsp;
+                            @Html.ValidationMessageFor(m => m.Vagon_Number)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sens:</td>
+                        <td colspan="3">
+                            Sosiri
+                            @Html.RadioButtonFor(m => m.Sens, "Sosiri", true)
+                            Plecari
+                            @Html.RadioButtonFor(m => m.Sens, "Plecari")
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span>DateTime:</span>
+                        </td>
+                        <td colspan="3">
+                            <input class="form-control" asp-for=@Model.Date_Time asp-format="{0:yyyy-MM-ddTHH:mm}" type="datetime-local" style="width: 250px" />
+                            &nbsp;&nbsp;
+                            @Html.ValidationMessageFor(m => m.Date_Time)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" align="center">
+                            <button value="submit" class="btn btn-primary" title="submit">@Model.buttonText</button>
+                            <a asp-action ="cancelData"  type="button" class="btn btn-secondary" asp-route-id="">
+                                <strong>Renunta</strong>
+                                </a>
+                        </td>
+
+                    </tr>
+                </table>
+
+                <h5>@Model.Message</h5>
+                <table class="table-condensed table-bordered">
+                    <tr>
+                        <th align="center" class="text-center">ID</th>
                         <th align="center">Plecari / Sosiri</th>
                         <th align="center">Nr. tren</th>
                         <th align="center">Nr. vagoane</th>
                         <th align="center">Data - Ora</th>
-                        <th align="center">Actiuni</th>
+                        <th align="center" class="text-center">Edit</th>
+                        <th align="center" class="text-center">Delete</th>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var tabel in Model.Transactions)
+                    @foreach (var e in Model.lstTransactions)
                     {
                         <tr>
-                            <td align="left">@tabel.Id</td>
+                            <td><b>@e.Id</b></td>
+                            <td align="center">@e.Sens</td>
+                            <td align="left">@e.Train_Number</td>
+                            <td align="left">@e.Vagon_Number</td>
+                            <td align="left">@e.Date_Time</td>
+                            <td align="center">
+                                <a asp-action ="Index"  type="button"
+                                               class="btn btn-success"  asp-route-id=@e.Id asp-route-type="e">
+                                    <i class="fa fa-edit"></i>
+                                    </a>
 
-                            @if (@tabel.Sens == "1")
-                            {
-                                <td align="left">Soseste</td>
-                            }
-                            else
-                            {
-                                <td align="left">Pleaca</td>
-                            }
-                            <td align="left">@tabel.Train_Number</td>
-                            <td align="left">@tabel.Vagon_Number</td>
-                            <td align="left">@tabel.Date_Time</td>
-                            <td align="left">
-                                <div class="form-row col">
-                                    <a asp-action="Logical_Delete" type="button"
-                                       class="btn btn-danger" asp-route-id="@tabel.Id">
-                                        <strong>Sterge</strong>
-                                    </a>
-                                </div>
+
+                                    @*<a class="btn btn-success" href="http://localhost:8508/CollectionDataModel?id=@e.Id&type=e"><i class="fa fa-edit"></i></a>*@
                             </td>
-                            <td align="left">
-                                <div class="form-row col">
-                                    <a asp-action="Edit" type="button"
-                                       class="btn btn-info" asp-route-id="@tabel.Id">
-                                        <strong>Edit</strong>
+                            <td align="center">
+                                <a asp-action ="Index"  type="button"
+                                               class="btn btn-danger"  asp-route-id="@e.Id" asp-route-type="d">
+                                    <i class="fa fa-trash"></i>
                                     </a>
-                                </div>
+                                    @*<a class="btn btn-danger" href="http://localhost:8508/CollectionDataModel?id=@e.Id&type=d"><i class="fa fa-trash"></i></a>*@
                             </td>
                         </tr>
                     }
-                </tbody>
-            </table>
-        </div>
-    </div>
+                </table>
 
+            }
+        </div>
+
+    </div>
 </body>
+</html>
