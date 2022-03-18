@@ -24,7 +24,7 @@ namespace Proiect.Controllers
         public IActionResult ProcessLogin(UserModel userModel)
         {
             
-            SecurityService securityService = new SecurityService();
+            SecurityService securityService = new();
 
             int user_id = securityService.IsValid(userModel);
 

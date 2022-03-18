@@ -13,37 +13,9 @@ namespace Proiect.Services
         public class CRUD
     {
                  readonly string conString = "User Id=C##TAXARE1;Password=123456;Data Source=localhost:1521/xe;Connection Timeout=30;";
-                 private string sqlStatement;
+        private string sqlStatement;
 
-
-            /* public void Create_Transactions(int id)
-             {
-                 using OracleConnection con = new OracleConnection(conString);
-                 {
-                     sqlStatement = "UPDATE C##TAXARE1.TRANSACTION SET  C##TAXARE1.TRANSACTION.IS_DELETED = 1 " +
-                                    "WHERE C##TAXARE1.TRANSACTION.ID =  :Transaction_Id";
-                     OracleCommand cmd = new OracleCommand(sqlStatement, con);
-                     cmd.Parameters.Add(new OracleParameter("Transaction_Id", id));
-                     try
-                     {
-                         con.Open();
-                         cmd.BindByName = true;
-                         OracleDataReader reader = cmd.ExecuteReader();
-                     }
-                     catch (Exception e)
-                     {
-                         Console.WriteLine(e.Message);
-                     }
-                     finally
-                     {
-                         if (null != con)
-                             con.Close();
-                     }
-                 }
-             }
-            */
-
-            public CollectionDataModel Update_Transactions(CollectionDataModel col)
+        public CollectionDataModel Update_Transactions(CollectionDataModel col)
             {
                 CollectionDataModel result = new CollectionDataModel();
                 using OracleConnection con = new OracleConnection(conString);
@@ -153,45 +125,49 @@ namespace Proiect.Services
                 return result;
             }
 
-            public CollectionDataModel validate_transaction(CollectionDataModel col)
+
+        public CollectionDataModel validate_transaction(CollectionDataModel col)
+        {
+            CollectionDataModel result = new CollectionDataModel();
+            using OracleConnection con = new OracleConnection(conString);
             {
-                CollectionDataModel result = new CollectionDataModel();
-                using OracleConnection con = new OracleConnection(conString);
+                try
                 {
-                    try
+                    int ln_aux = 0;
+                    var dt = Convert.ToDateTime(col.Date_Time);
+                    string dataa = dt.Year.ToString() + dt.ToString("MM") + dt.ToString("dd");
+                    sqlStatement = "Select validate_transaction('" + col.OTF_Id + "', '" + col.Station_Id + "', '" + dataa + "') AS ln_aux FROM dual";
+                    OracleCommand cmd = new OracleCommand(sqlStatement, con);
+                    OracleConnection conn = new OracleConnection(conString);
+                    con.Open();
+                    OracleDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
                     {
-                        OracleConnection conn = new OracleConnection(conString);
-                        OracleCommand cmd = new OracleCommand("validate_transaction", conn);
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.Add("p_otf_id", OracleDbType.Char).Value = col.OTF_Id;
-                        cmd.Parameters.Add("p_station_id", OracleDbType.Char).Value = col.Station_Id;
-                        var dt = Convert.ToDateTime(col.Date_Time);
-                        string dataa = dt.Year.ToString() + dt.ToString("MM") + dt.ToString("dd");
-                        cmd.Parameters.Add("p_transaction_date", OracleDbType.Char).Value = dt;
-                        //cmd.Parameters.Add("ln_aux", OracleDbType.Int32).Direction = ParameterDirection.Output;
-                        conn.Open();
-                        cmd.ExecuteNonQuery();
-                        result.Id = Convert.ToInt32(cmd.Parameters["ln_aux"].Value.ToString());
-                        if (result.Id != 0)
-                            result.Message = "success";
-                        else result.Message = "NU validez - am gasit checkpoint avand data_check mai mare decat data tranzatiei curente!";
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                        result.Message = "Error:" + e.Message.ToString();
+                        ln_aux = Convert.ToInt32(reader.GetString("ln_aux"));
                     }
 
-                    finally
-                    {
-                        if (null != con)
-                            con.Close();
+                    if (ln_aux != 0)
+                        result.Message = "success";
+                    else result.Message = "NU validez - am gasit checkpoint avand data_check mai mare decat data tranzatiei curente!";
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    result.Message = "Error:" + e.Message.ToString();
+                }
 
-                    }
+                finally
+                {
+                    if (null != con)
+                        con.Close();
 
                 }
-                return result;
-            }
 
+            }
+            return result;
         }
+
+
+    }
     }

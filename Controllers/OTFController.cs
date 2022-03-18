@@ -19,12 +19,11 @@ namespace Proiect.Controllers
         {
             CollectionDataModel tabel = new CollectionDataModel();
             GatheringInformation gatheringinformation = new GatheringInformation();
-            tabel.Transactions = gatheringinformation.GetTransaction();
-            //ViewBag.Station = HttpContext.Session.GetString("Station");
-            //ViewBag.OTF = HttpContext.Session.GetString("OTF");
-            //List<OTFModel> Selectie_OTF = new List<OTFModel>();
-
             CRUD trn = new CRUD();
+            tabel.Transactions = gatheringinformation.GetTransaction();
+
+
+
             if (id > 0 && !String.IsNullOrWhiteSpace(type))
             {
                 try
@@ -143,8 +142,9 @@ namespace Proiect.Controllers
             tabel.OTFs = gatheringinformation.GetOTFs();
             tabel.Stations = gatheringinformation.GetStations();
             return View(tabel);
-
         }
+
+
         [HttpPost]
         public ActionResult Index(CollectionDataModel tabel)
         {
@@ -154,12 +154,13 @@ namespace Proiect.Controllers
             {
                 CollectionDataModel e = new CollectionDataModel();
                 ViewBag.Id = HttpContext.Session.GetInt32("Id");
-                //e = trn.validate_transaction(tabel);
-                //if (e.Message != "success") 
-                //{
-                //    e.Message = e.Message;
-                //}
-                //else
+                e = trn.validate_transaction(tabel);
+                if (e.Message != "success")
+                {
+                    e.Message = e.Message;
+                }
+                else
+
                 if (ViewBag.Id != null)
                 {
                     tabel.Id = ViewBag.Id;
@@ -233,8 +234,8 @@ namespace Proiect.Controllers
                 tabel.StmtType = "Insert";
                 return View(tabel);
             }
-
         }
+
 
         public IActionResult cancelData()
         {
@@ -247,7 +248,7 @@ namespace Proiect.Controllers
         {
             HttpContext.Session.SetString("OTF_Id", transaction.OTF_Id);
             HttpContext.Session.SetString("Station_Id", transaction.Station_Id);
-            //HttpContext.Session.Remove("OTF");
+
             return RedirectToAction("Index");
         }
 
@@ -261,23 +262,26 @@ namespace Proiect.Controllers
             Index(transaction.Id, "e");
             return View();
         }
-        public IActionResult OTF_Selection()
-        {
-            OTFModel otfModel = new OTFModel();
-            GatheringInformation gatheringinformation = new GatheringInformation();
-            otfModel.Selectie_OTF = gatheringinformation.GetOTF();
 
-            return View(otfModel);
-        }
+        /*    public IActionResult OTF_Selection()
+            {
+                OTFModel otfModel = new OTFModel();
+                GatheringInformation gatheringinformation = new GatheringInformation();
+                otfModel.Selectie_OTF = gatheringinformation.GetOTF();
 
-        public IActionResult Station_Selection()
-        {
-            StationModel stationModel = new StationModel();
-            GatheringInformation gatheringinformation = new GatheringInformation();
-            stationModel.Selectie_Station = gatheringinformation.GetStation();
+                return View(otfModel);
+            }
 
-            return View(stationModel);
-        }
+
+            public IActionResult Station_Selection()
+            {
+                StationModel stationModel = new StationModel();
+                GatheringInformation gatheringinformation = new GatheringInformation();
+                stationModel.Selectie_Station = gatheringinformation.GetStation();
+
+                return View(stationModel);
+            }
+        */
 
         public IActionResult Update_Station(StationModel station)
         {
@@ -296,6 +300,7 @@ namespace Proiect.Controllers
             col.userId = HttpContext.Session.GetString("User_Id");
             return RedirectToAction("Index");
         }
+
         public IActionResult Logical_Delete(TransactionModel transaction)
         {
             // Logical_Delete logical = new Logical_Delete();
@@ -308,10 +313,81 @@ namespace Proiect.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public IActionResult Borderouri()
         {
+            GatheringInformation gatheringinformation = new GatheringInformation();
+            CollectioDataModel_Bor tabel = new CollectioDataModel_Bor();
+            Borderouri BOR = new Borderouri();
+            tabel.lstBorderouri = BOR.GetBorderouri();
+            ViewBag.OTF_Id = HttpContext.Session.GetString("OTF_Id_Bor");
+            ViewBag.Station_Id = HttpContext.Session.GetString("Station_Id_Bor");
+
+            tabel.OTFs = gatheringinformation.GetOTFs();
+            tabel.Stations = gatheringinformation.GetStations();
+
+            tabel.OTF_Id_Bor = ViewBag.OTF_Id;
+            tabel.Station_Id_Bor = ViewBag.Station_Id;
+
+            return View(tabel);
+        }
+
+        [HttpPost]
+        public ActionResult Borderouri(CollectioDataModel_Bor tabel)
+        {
+            Borderouri b = new Borderouri();
+            CollectioDataModel_Bor e = new CollectioDataModel_Bor();
+            GatheringInformation gatheringinformation = new GatheringInformation();
+            //List<CollectioDataModel_Bor> lsst_Bor = new List<CollectioDataModel_Bor>();
+            CRUD trn = new CRUD();
+            e.OTFs = gatheringinformation.GetOTFs();
+            List<Bord> lsst_Bor = new List<Bord>();
+            e.Stations = gatheringinformation.GetStations();
+            var lst_Bor = b.GetBorderouri();
+            if (ViewBag.OTF_Id != null && ViewBag.Station_Id != null)
+            {
+                lsst_Bor = lst_Bor.Where(c => c.OTF_Id == ViewBag.OTF_Id)
+                        .Where(c => c.Station_Id == ViewBag.Station_Id)
+                        .ToList();//gatheringinformation.GetTransactionById(0).lstTransactions;
+                                  //else lstTans = new List<TransactionModel>();
+                tabel.OTF_Id = ViewBag.OTF_Id;
+                tabel.Station_Id = ViewBag.Station_Id;
+            }
+            var c = lsst_Bor;
+            if (c != null)
+            {
+                e.lstBorderouri = c;
+            }
+            else
+                e.lstBorderouri = new List<Bord>();
+
+            return View(e);
+        }
+
+ 
+        public IActionResult setDrops_Borderouri(CollectioDataModel_Bor transaction)
+        {
+            
+            HttpContext.Session.SetString("OTF_Id_Bor", transaction.OTF_Id_Bor);
+            HttpContext.Session.SetString("Station_Id_Bor", transaction.Station_Id_Bor);
+           // HttpContext.Session.SetString("Data_Time", transaction.Date_Time.ToString());
+
+            return RedirectToAction("Borderouri");
+        }
+
+        public ActionResult Genereaza_Borderouri(CollectioDataModel_Bor borderouri)
+        {
+           
+            Borderouri bor = new Borderouri();
+            borderouri =  bor.Gen_Bord(borderouri);
+            if (borderouri.Message == "success") 
+            {
+                Borderouri();
+            }
             return View();
         }
+
+
 
     }
 }

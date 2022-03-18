@@ -54,6 +54,8 @@ namespace Proiect.Models
         public string buttonCancel { get; set; }
         public string Message { get; set; }
         public List<TransactionModel> lstTransactions { get; set; }
+
+        public int? Id_Ses_Borderouri { get; set; }
         public void OnPostCancel()
         {
             Id = 0;
